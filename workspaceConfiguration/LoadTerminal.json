@@ -1,0 +1,15 @@
+{
+    "version":"1.2.1",
+    "groups":[
+        {
+            "name":"Mevn Group (crtl + alt + d)",
+            "description":"Open Client and Server",
+            "enabled":true,
+            "terminals":[
+                { "name":"Client", "path":"Client", "cmd":["npm run dev"], "num":0 },
+                { "name":"Server", "path":"Server", "cmd":["npm run dev"], "num":0 }
+            ]
+        }
+    ]
+}
+

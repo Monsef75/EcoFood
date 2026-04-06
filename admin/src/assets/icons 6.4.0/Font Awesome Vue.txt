@@ -1,0 +1,22 @@
+npm i --save @fortawesome/fontawesome-svg-core             //Cmd
+# Free icons styles
+npm i --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/free-regular-svg-icons
+npm i --save @fortawesome/free-brands-svg-icons
+# for Vue 3.x
+npm i --save @fortawesome/vue-fontawesome@latest-3
+
+
+/* import the fontawesome core */                          //main.js
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+/* import specific icons */
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+
+/* add icons to the library */
+library.add(faUserSecret)
+
+app.component('font-awesome-icon', FontAwesomeIcon)

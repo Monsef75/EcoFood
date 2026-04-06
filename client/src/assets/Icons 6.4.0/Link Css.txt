@@ -1,0 +1,3 @@
+<script src="https://kit.fontawesome.com/KitCodeFromAccount.js" crossorigin="anonymous"></script>
+
+Current Kit : 2396711ca4

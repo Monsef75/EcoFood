@@ -1,0 +1,110 @@
+# =====================================================
+# 🧩 Combined .gitignore — Node.js + Express + Frontend
+# =====================================================
+
+# ----------------------------
+# 📦 Dependencies
+# ----------------------------
+/client/node_modules/
+/admin/node_modules/
+/server/node_modules/
+
+# ----------------------------
+# 🔐 Environment Variables
+# ----------------------------
+
+/client/.env*
+/admin/.env*
+/server/.env*
+
+# ----------------------------
+# 🧾 Logs
+# ----------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------------------------
+# ⚙️ Build & Coverage Outputs
+# ----------------------------
+
+/client/dist/
+/client/dist-ssr/
+/client/build/
+/client/coverage/
+/admin/dist/
+/admin/build/
+/admin/coverage/
+/server/dist/
+/server/build/
+/server/coverage/
+
+# ----------------------------
+# 🕒 Runtime Data
+# ----------------------------
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ----------------------------
+# 🗂️ Temporary & Cache Files
+# ----------------------------
+.tmp/
+.temp/
+.cache/
+*.tmp
+*.cache
+
+# ----------------------------
+# 🖥️ OS & System Files
+# ----------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# ----------------------------
+# 🧠 IDE / Editor Configs
+# ----------------------------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*.tsbuildinfo
+
+# ----------------------------
+# 🗄️ Databases & Backups
+# ----------------------------
+*.sqlite
+*.db
+*.bak
+*.old
+
+# ----------------------------
+# 🖼️ Uploads / Assets
+# ----------------------------
+uploads/
+assets/uploads/
+public/uploads/
+
+# ----------------------------
+# 🧪 Cypress (if used)
+# ----------------------------
+/cypress/videos/
+/cypress/screenshots/
+
+# ----------------------------
+# ✅ Optional Safe Folders (Uncomment if needed)
+# ----------------------------
+# /src/assets/private/
+# /src/config/

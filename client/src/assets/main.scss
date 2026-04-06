@@ -1,0 +1,194 @@
+:root {
+    --Dark-Blue3 : #414451;
+    
+    --Dark-Blue2 : #2E313F;
+    --Dark-Blue : #041635;
+    --Dark-Purple: #f02c1c;
+    --Light-Purple: #f107a3;
+
+    --c1 : #fc6909;
+    --c2 : #99a40a;
+}
+
+.c-c1 {
+    color: var(--c1);
+}
+.c-c2 {
+    color: var(--c2);
+}
+.bc-c1 {
+    background-color: var(--c1);
+}
+.bc-c2 {
+    background-color: var(--c2);
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Arial, "Noto Sans Arabic", sans-serif !important;
+}
+
+.c-dark-purple {
+    color: var(--Dark-Purple);
+}
+.c-light-purple {
+    color: var(--Light-Purple);
+}
+.bc-dark-purple {
+    background-color: var(--Dark-Purple);
+}
+.bc-light-purple {
+    background-color: var(--Light-Purple);
+}
+.bc-dark-blue {
+    background-color: var(--Dark-Blue);
+}
+.bc-dark-blue2 {
+    background-color: var(--Dark-Blue2);
+}
+.bc-dark-blue3 {
+    background-color: var(--Dark-Blue3);
+}
+.bc-bttn-linear {
+	position: relative;
+	color: white;
+    overflow: hidden;
+	z-index: 0;
+    text-transform: capitalize;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(90deg, var(--c1) 0%, var(--c2) 100%);
+		transition: opacity 0.4s ease-out;
+		z-index: -1;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(90deg, #8f3aff 0%, #ff3c89 100%);
+		opacity: 0;
+		transition: opacity 0.4s ease-out;
+		z-index: -1;
+	}
+
+	&:hover::after {
+		opacity: 1;
+	}
+}
+.bc-bttn-linear2 {
+    position: relative;
+	color: white;
+    overflow: hidden;
+	z-index: 0;
+    text-transform: capitalize;
+    &::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(90deg, #8f3aff 0%, #ff3c89 100%);
+		transition: opacity 0.4s ease-out;
+		z-index: -1;
+	}
+}
+
+
+.bgImg {
+    background-image: url('/src/assets/Imgs/CustomerUI/Cover.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.1);
+    &::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 0;
+    }
+}
+.bgShadow {
+    position: relative;
+    &::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: hsla(0, 0%, 0%, 0.5);
+    }
+}
+
+/* 
+<div class="Loader f-center" style="height: 70vh;" v-if="Loading">
+    <span class="Spinner" ></span>
+</div>  
+
+<div class="ButtonSpinner" v-if="Loading">
+    <span class="Spinner"></span>
+</div> 
+*/
+
+.Spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(farthest-side,white 94%,#0000) top/9px 9px no-repeat,
+            conic-gradient(#0000 30%,white);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 7px),#000 0);
+    animation: Spinner 1s infinite linear;
+}
+.ButtonSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default !important;
+    // border: 1px solid var(--Light-White2);
+    .Spinner {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: radial-gradient( farthest-side, var(--Light-White2) 94%, #0000) top/9px 9px no-repeat,
+            conic-gradient(#0000 30%, var(--Light-White2));
+        -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 5px),#000 0);
+        animation: Spinner 1s infinite linear;
+    }
+}
+
+@keyframes Spinner {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+
+.Inactive {
+    width: 130px;
+    cursor: not-allowed;
+    background-color: var(--Dark-Blue2);
+    color: var(--Light-White2);
+    transition: var(--Trans3);
+}
+.Active {
+    cursor: pointer;
+    background-color: var(--Scnd-Blue);
+    color: var(--White);
+    &:hover {
+        background-color: var(--Prim-Blue);
+    }
+}
+
+.bc-shadow {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100vh;
+    width: 100%;
+}
