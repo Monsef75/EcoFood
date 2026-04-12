@@ -1,14 +1,19 @@
 <template>
-    
-    <section class="Favorites pb-4">
 
-        <div class="Empty t-center mt-5 pt-4" v-if="empty">
-            <img src="\src\assets\Imgs\Common\DocScope.png" alt="" style="width: 90px; opacity: .5;">
-            <p class="s20 c-white w-700 c-light-white2 mt-3">No Favorites Yet !</p>
+    <section v-if="loading">
+        <div class="Loader f-center" style="height: 70vh;">
+            <span class="Spinner" ></span>
+        </div>
+    </section>
+    <section class="Favorites pb-4" v-else>
+
+        <div class="Empty t-center mt-5 pt-5" v-if="empty">
+            <i class="fa-solid fa-heart-circle-exclamation c-light-white2 s50"></i>
+            <p class="w-700 c-light-white2 mt-2 s25 n-spacing05">No Favorites Yet !</p>
         </div>
     
         <div class="Favorite position-relative bc-light-white3 rd-10 d-flex align-items-center gap-3 mb-3" v-for="(favorite,index) in favorites" v-else>
-            <img :src="favorite.img" style="width: 80px;" alt="">
+            <div class="img" style="width: 80px; height: 80px;" :style="{ backgroundImage: `url(${favorite.img})` }"></div>
             <div class="text">
                 <p class="c-white s18 fw-bold letter-p-05 mb-1">{{ favorite.name }}</p>
                 <p class="c-light-white s16 fw-bold letter-p-05">
@@ -16,38 +21,53 @@
                     <i class="fa-solid fa-star"></i>
                 </p>
             </div>
-            <i class="fa-solid fa-trash c-red s20 position-absolute" style="right: 20px;" @click="favorites.splice( index,1)"></i>
+            <i class="fa-solid fa-trash c-red s20 position-absolute" style="right: 20px;" @click="DeleteFavorite( favorite.id )"></i>
         </div>
     </section>
     
 </template>
 
 <script>
-    import Food from '@/assets/Imgs/clientUI/categories/offer-1.jpg'
-    import Fresh from '@/assets/Imgs/clientUI/categories/offer-2.jpg'
+
+    import { mapActions } from 'vuex';
     
     export default {
     
         components: {},
         data() { return {
-
+            loading: true,
             empty: false,
-            favorites: [
-                { name: 'Fast Food Pizza', disc: '23 Da | 4.5', img: Food, },    
-                { name: 'Fast Food Chicken', disc: '29 Da | 3.9', img: Fresh, },  
-            ],
+            favorites: [],
 
         }},
         methods: {
-            
+            DeleteFavorite( productId ) {
+                this.deleteFavorite({ productId: productId }).then( res => {
+                    this.favorites = this.favorites.filter( favorite => favorite.id != productId )
+                    if (this.favorites.length == 0) this.empty = true
+                })
+            },
+            ...mapActions(['getFavorites','deleteFavorite']),
         },
         computed: {
             
         },
-        watch: {
-            'favorites.length'(val) {
-                if (!val) this.empty = true
-            }
+        created() {
+            this.getFavorites().then( res=> {
+                if (res.length == 0) this.empty = true
+                else { 
+                    res.forEach( product => {
+                        this.favorites.push({
+                            id: product._id,
+                            name: product.info.subCategory + ' : ' + product.info.name,
+                            img: 'http://localhost:3000' + product.image,
+                            disc: product.info.price + 'Da | 4.5',
+                            waiting: false,
+                        })
+                    })
+                }
+                this.loading = false
+            })
         },
     }
     
@@ -57,9 +77,12 @@
 
     .Favorites {
         .Favorite {
-            img {
+            .img {
                 border-top-left-radius: 10px;
                 border-bottom-left-radius: 10px;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
             }
         }
     }

@@ -32,6 +32,9 @@ html {
 	scroll-behavior: smooth;
 }
 
+.c-blue {
+    color: var(--Facebook);
+}
 
 /*         Padding        */
 
@@ -230,16 +233,16 @@ html {
 /*         Text Layout       */
 
 
-.letter-n-05 {
+.n-spacing05 {
     letter-spacing: -0.5px;
 }
-.letter-n-1 {
+.n-spacing1 {
     letter-spacing: -1px;
 }
-.letter-p-1 {
+.p-spacing1 {
     letter-spacing: 1px;
 }
-.letter-p-05 {
+.p-spacing05 {
     letter-spacing: 0.5px;
 }
 .lh-md {
@@ -336,9 +339,6 @@ html {
 
 .bc-white {
     background-color: white;
-}
-.bc-white2 {
-    background-color: var(--White2);
 }
 
 .bc-light-white {

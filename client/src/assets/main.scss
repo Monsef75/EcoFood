@@ -130,7 +130,7 @@ body {
     <span class="Spinner" ></span>
 </div>  
 
-<div class="ButtonSpinner" v-if="Loading">
+<div class="ButtonSpinner" v-if="loading">
     <span class="Spinner"></span>
 </div> 
 */

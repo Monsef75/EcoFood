@@ -1,0 +1,147 @@
+<template>
+
+    <div class="Users px-4 bc-c3">
+
+        <head_ Title="Users" />
+        
+        <div class="Loader f-center" style="height: 50vh;" v-if="Loading">
+            <span class="spinner" ></span>
+        </div>
+
+        <div class="EmptyPage f-center gap-5" v-else-if="empty">
+            <img style="width: 300px; opacity: 0.5;" src="/imgs/clientUI/Docs.png" alt="">
+            <div>
+                <p class="c-light-white3 fw-bold lh-sm letter-p-1" style="font-size: 40px;">
+                    There Are No Members Right Now !
+                </p>
+            </div>
+        </div>
+
+        <div v-else>
+            <boxes :boxes="boxes"/>
+            <span class="SpinnerLoader position-fixed mt-5" style="width: 48px; height: 48px;" v-if="BoxesLoading" ></span>
+            <tableSlot :THead="THead" #Slot v-else >
+
+                <tr class="trans3" v-for="(User,Index) in Users">
+                    <th scope="row">{{ Index + 1 }}</th>
+                    <th><img src="/imgs/clientUI/avatar.png" alt="" style="width: 50px;height: 50px;border-radius: 5px;"></th>
+                    <th>{{ User.fullName }}</th>
+                    <th>{{ User.email }}</th>
+                    <th>{{ User.productsNbr }}</th>
+                    <th>{{ User.createdAt }}</th>
+                    <th class="position-relative">
+                        <div class="buttonSpinner" v-if="User.waiting">
+                            <span class="spinner" style="width: 20px; height: 20px;"></span>
+                        </div> 
+                        <button class="trans3 c-light-red w-700" @click="DeleteUser(User.id, Index)" v-else>Delete</button>
+                    </th>
+                </tr>
+
+            </tableSlot>
+
+        </div>
+
+    </div>
+
+</template>
+
+<script>
+
+    import head_ from '@/components/elements/title.vue'
+    import tableSlot from '@/components/elements/table.vue'
+    import gearIcon from '@/components/elements/gearIcon.vue'
+    import boxes from '@/components/elements/boxes.vue'
+    import { mapActions } from 'vuex'
+
+    export default {
+        components: {head_,tableSlot,gearIcon,boxes},
+        data() { return {
+            boxes: [
+                { icon: 'fa-users', title: 'All Orders', color: '#1877F2', data: null,},
+                { icon: 'fa-arrow-down-wide-short', title: 'Created This Month', color: '#FE2C55', data: null,},
+                { icon: 'fa-arrow-down-wide-short', title: 'Created This Week', color: '#fbad50', data: null,},                
+            ],
+            THead: [
+                "#","User Name","Email","Porducts","Joined In","Process"
+            ],
+            orders: [],
+
+            loading: true,
+            empty: false,
+        }},
+        methods: {
+            DeleteOrder( orderId, Index ) {
+                this.orders[Index].Waiting = true
+                this.deleteOrder({ id: orderId }).then( ()=> {
+                    this.orders.splice( Index,1 )
+                    this.boxes.forEach( box => box.data -= 1 )
+                    if (this.orders.length == 0) this.empty = true
+                })
+            },
+            ...mapActions(['setOrders','deleteOrder']),
+        },
+        created() {
+            this.setOrders().then( res => {
+                if ( res.ordersNbr == 0 ) this.empty = true
+                else {
+                    res.orders.forEach( User => { User.waiting = false })                    
+                    this.orders = res.orders
+                    this.boxes.forEach( box => box.data = res.ordersNbr )
+                }
+                this.loading = false
+            })
+        },
+    }
+</script>
+
+<style scoped lang="scss">
+
+tr {
+    color: var(--Light-White2);
+    vertical-align: middle;
+    th {
+        text-align: center;
+        button {
+            &:hover {
+                color: red;
+            }
+        }
+    }
+}
+tr:nth-of-type(2n+1) {
+    background-color: hsla(0, 0%, 27%, 0.6);
+}
+tr:not(.Loader):hover {
+    color: var(--Light-white);
+}
+tr.Loader {
+    .Image {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        margin: 0 auto;
+    }
+    .Text {
+        width: 90%;
+        height: 15px;
+        border-radius: 10px;
+    }
+    span {
+        background: linear-gradient(
+            100deg,
+            rgba(255, 255, 255, 0) 40%,
+            rgba(255, 255, 255, .5) 50%,
+            rgba(255, 255, 255, 0) 60%
+        ) var(--Light-white);
+        background-size: 200% 100%;
+        background-position-x: 180%;
+        animation: 1.5s .06s Loader ease-in-out infinite;
+    }
+    @keyframes Loader {
+        to {
+            background-position-x: -20%;
+        }
+    }
+}
+
+</style> 

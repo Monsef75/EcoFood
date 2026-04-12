@@ -1,8 +1,8 @@
 <template>
     
-        <div class="position-absolute" style="border-radius: 100px;">
-            <i class="fa-solid fa-arrow-left-long c-white s25"></i>
-        </div>
+    <div class="iconWrapper bc-c2 f-center rd-20 mb-3" style="width: 80px; height: 50px;">
+        <i class="fa-solid fa-circle-arrow-left c-white s25"></i>
+    </div>
     
 </template>
 

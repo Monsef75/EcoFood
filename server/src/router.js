@@ -10,7 +10,7 @@ const refSecKey = process.env.REFRESH_SEC_KEY
 const verifyToken = require('./middlewares/verifyToken.js')
 // const ndmailer = require('./services/nodemailer.js')
 
-module.exports = (app, members, products) => {
+module.exports = (app, members, products, orders) => {
 
     app.get('/rout', verifyToken, upload.array('Images', 1), async (req, res) => {
 
@@ -37,7 +37,7 @@ module.exports = (app, members, products) => {
                 role: 'customer',
                 createdAt: createdAt,
                 favorites: [],
-                orders: [],
+                purchases: [],
                 productsNbr: 0,
             }
 
@@ -103,9 +103,107 @@ module.exports = (app, members, products) => {
         await members.updateOne({ _id: new ObjectId(addedBy.id) }, { $inc: { productsNbr: 1 } });            
         res.send( result )
     })
-    app.get('/getProducts', upload.single('img'), async (req, res) => {
+    app.get('/getProducts', async (req, res) => {
         const Products = await products.find().toArray()
         res.send( Products )
+    })
+
+    app.post('/addFavorite', async (req, res) => {
+        const { productId, userId, } = req.body
+        , user = await members.findOne({ _id: new ObjectId(userId) })
+
+        if (user.favorites.includes(productId)) {
+            return res.send({ message: 'Already In Favorites' })
+        }
+
+        const result = await members.updateOne({ _id: new ObjectId(userId) }, { $addToSet: { favorites: productId } } )
+        res.send({ message: 'Added To Favorites Successfully', result })
+    })
+    app.get('/getFavorites', async (req, res) => {
+        const { userId, } = req.query
+        , user = await members.findOne({ _id: new ObjectId(userId) })
+        , favoritesIds = user.favorites.map( id => new ObjectId(id) )
+        , favorites = await products.find({ _id: { $in: favoritesIds } }).toArray()
+        res.send( favorites )
+    })
+    app.delete('/deleteFavorite', async (req, res) => {
+        const { productId, userId, } = req.body
+        , result = await members.updateOne({ _id: new ObjectId(userId) }, { $pull: { favorites: productId } } )
+        res.send(result)
+    })
+
+    app.post('/addPurchase', async (req, res) => {
+        const { productId, userId, } = req.body
+        , user = await members.findOne({ _id: new ObjectId(userId) })
+
+        if (user.purchases.includes(productId)) {
+            return res.send({ message: 'Already In Cart' })
+        }
+
+        const result = await members.updateOne({ _id: new ObjectId(userId) }, { $addToSet: { purchases: productId } } )
+        res.send({ message: 'Added To Cart Successfully', result })
+    })
+    app.get('/getPurchases', async (req, res) => {
+        const { userId, } = req.query
+        , user = await members.findOne({ _id: new ObjectId(userId) })
+        , purchasesIds = user.purchases.map( id => new ObjectId(id) )
+        , purchases = await products.find({ _id: { $in: purchasesIds } }).toArray()
+        res.send( purchases )
+    })
+    app.delete('/deletePurchase', async (req, res) => {
+        const { productId, userId, } = req.body
+        , result = await members.updateOne({ _id: new ObjectId(userId) }, { $pull: { purchases: productId } } )
+        res.send(result)
+    })
+    
+    app.post('/addOrder', async (req, res) => {
+        const { userId, order } = req.body
+
+		, insertOrder = await orders.insertOne(order)
+		, update = await members.updateOne({ _id: new ObjectId(userId) }, { $set: { purchases: [] }})
+			
+		res.send({ insertOrder, update})
+    })
+    app.get('/getOrders', async (req, res) => {
+        const { userId, } = req.query
+
+        const ordersList = await orders.find({
+            "products.addedBy": userId
+        }).toArray()
+
+        const productIds = [
+            ...new Set(
+                ordersList.flatMap(o =>
+                    o.products
+                        .filter(p => p.addedBy === userId)
+                        .map(p => p.productId)
+                )
+            )
+        ].map(id => new ObjectId(id))
+
+        const productsList = await products.find({
+            _id: { $in: productIds }
+        }).toArray()
+
+        const map = Object.fromEntries(
+            productsList.map(p => [p._id.toString(), p])
+        )
+
+        const result = ordersList.map(o => ({
+            _id: o._id,
+            buyerInfo: o.buyerInfo,
+            createdAt: o.createdAt,
+            products: o.products
+                .filter(p => p.addedBy === userId)
+                .map(p => (map[p.productId]))
+        }))
+
+        res.send(result)
+    })
+    app.delete('/deleteOrder', async (req, res) => {
+        const { id, } = req.body
+        , deleteOrder = await orders.deleteOne({ '_id': new ObjectId(id) })
+        res.send(deleteOrder)
     })
 
     app.get('/adminPanel/getProducts' , async (req, res) => {  

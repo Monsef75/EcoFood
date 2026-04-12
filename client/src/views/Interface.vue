@@ -41,7 +41,7 @@
             responsive: window.innerWidth,
             pages: {
                 customer: [markRaw(categories),markRaw(favorites),markRaw(stores),markRaw(cart),markRaw(settings)],
-                custHeaders: ['Home','Favorites','Nearby Stores','Shopping Cart','Settings'],
+                custHeaders: ['Home','Favorites','Nearby Stores','Cart & Orders','Settings'],
             },
             currentPageIndex: 0,
 

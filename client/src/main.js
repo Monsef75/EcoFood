@@ -1,4 +1,4 @@
-import './assets/Framework.css'
+import './assets/framework.css'
 import './assets/main.scss'
 import './assets/Normalize/Normalize.css'
 import './assets/Icons 6.4.0/css/all.min.css'

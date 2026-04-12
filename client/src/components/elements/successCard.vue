@@ -2,11 +2,11 @@
     
     <div class="SuccessCard position-fixed" Id="SuccessCard">
         <div class="Container position-relative shadow-sm">
-            <div class="Circle position-absolute f-center">
+            <div class="iconContainer position-absolute f-center">
                 <i class="fa-solid fa-check"></i>
             </div>
             <span class="c-white s18 fw-bold t-nowrap pe-2">{{ successCard.text }}</span>
-            <i class="fa-solid fa-circle-xmark Close-Icon c-light-white2 s20 trans3 pointer" @click="hideSuccessCard"></i>
+            <i class="fa-solid fa-circle-xmark closeIcon c-light-white2 s20 trans3 pointer ms-auto" @click="hideSuccessCard"></i>
         </div>
     </div>
     
@@ -24,10 +24,10 @@
         methods: {
             hideSuccessCard() {
                 const card = document.getElementById('SuccessCard')
-                card.classList.remove('ParentAnim')
+                card.classList.remove('active')
                 setTimeout( () => {
-                    if (!card.classList.contains('ParentAnim')) {
-                        card.firstElementChild.classList.remove('ChildAnim')
+                    if (!card.classList.contains('active')) {
+                        card.firstElementChild.classList.remove('anim')
                     }
                 } , 3000 )
             },
@@ -40,13 +40,13 @@
                 handler( info ) {
                     if (info) {
                         const card = document.getElementById('SuccessCard')
-                        if (card.classList.contains('ParentAnim')) {
-                            card.firstElementChild.classList.remove('ChildAnim')
+                        if (card.classList.contains('active')) {
+                            card.firstElementChild.classList.remove('anim')
                         }
-                        else card.classList.add('ParentAnim')
+                        else card.classList.add('active')
                         
                         setTimeout( () => {
-                            card.firstElementChild.classList.add('ChildAnim')
+                            card.firstElementChild.classList.add('anim')
                         } , 1000 )
                         // setTimeout( () => {
                         //     card.classList.add('RemoveAnim')
@@ -65,6 +65,24 @@
 <style scoped lang='scss'>
     
 .SuccessCard {
+    &.active {
+        opacity: 1;
+        .anim {
+            width: calc(100% + 1.5rem);
+            --bg-toggle: hsl(96, 85%, 34%);
+            --bg-circle: hsl(0, 0%, 96%);
+            span {
+                color: white;
+            }
+            .iconContainer {
+                left: .5rem;
+            }
+            .closeIcon {
+                display: unset;
+            }
+        }
+    }
+
     z-index: 3;
     opacity: 0;
     left: 40px;
@@ -86,7 +104,7 @@
             transition: color .6s ease-in;
             padding-left: 70px;
         }
-        .Circle {
+        .iconContainer {
             width: 45px;
             height: 45px;
             background-color: var(--bg-circle);
@@ -98,7 +116,7 @@
                 color: var(--bg-toggle);
             }
         }
-        .Close-Icon{
+        .closeIcon {
             display: none;
             &:hover {
                 color: white;
@@ -107,37 +125,21 @@
     }
     
 }
-.ParentAnim {
-    opacity: 1;
-    .ChildAnim {
-        width: calc(100% + 1.5rem);
-        --bg-toggle: hsl(96, 85%, 34%);
-        --bg-circle: hsl(0, 0%, 96%);
-        span {
-            color: white;
-        }
-        .Circle {
-            left: .5rem;
-        }
-        .Close-Icon{
-            display: unset;
-        }
-    }
-}
+
 .RemoveAnim {
     span {
         display: none;
         opacity: 0;
         visibility: hidden;
     }
-    .Circle {
+    .iconContainer {
         transform: scale(1.2);
     }
 }
 
 @media screen and (max-width: 576px) {
     .SuccessCard {
-        left: 20px;
+        left: 10px;
         bottom: 20px;
         .Container {
             height: 55px;
@@ -147,11 +149,16 @@
                 line-height: 1.4;
             }
         }
+    
+        &.active {
+            width: calc(100% - 20px);
+            .anim {
+                width: 100%;
+                padding-right: 15px;
+            }
+        }
     }
-    .ParentAnim .ChildAnim {
-        width: calc(100% - 10px);
-        padding-right: 10px;
-    }
+
 }
     
 

@@ -147,6 +147,137 @@ const store = createStore({
             })
         },
 
+        addFavorite( context, data ) {
+            data.userId = context.state.user.id
+            return new Promise((resolve, reject) => {
+                axios.post(END_POINT + `/addFavorite`, data )
+                .then( res => {
+                    context.commit( 'setSuccessCard',{ text: res.data.message, to: null}) 
+                    console.log('Product Added', res.data.result ? res.data.result : null)
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('Adding Product Failed', err)
+                    reject()
+                })
+            })
+        },
+        getFavorites( context ) {
+            return new Promise((resolve, reject) => {
+                axios.get(END_POINT + `/getFavorites`, { params: { userId: context.state.user.id }})
+                .then( res => {
+                    console.log('Favorites :', res.data)
+                    resolve(res.data)
+                })
+                .catch( err => {
+                    console.log('getting Favorites Failed', err)
+                    reject()
+                })
+            })
+        },
+        deleteFavorite( context, data ) {
+            data.userId = context.state.user.id
+            return new Promise((resolve, reject) => {
+                axios.delete(END_POINT + `/deleteFavorite`, { data: data })
+                .then( res => {
+                    context.commit( 'setSuccessCard',{ text: 'Product Removed Successfully', to: null}) 
+                    console.log('Product Removed', res.data)
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('Removing Product Failed', err)
+                    reject()
+                })
+            })
+        },
+
+        addPurchase( context, data ) {
+            data.userId = context.state.user.id
+            return new Promise((resolve, reject) => {
+                axios.post(END_POINT + `/addPurchase`, data )
+                .then( res => {
+                    context.commit( 'setSuccessCard',{ text: res.data.message, to: null}) 
+                    console.log('Product Added', res.data.result ? res.data.result : null)
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('Adding Product Failed', err)
+                    reject()
+                })
+            })
+        },
+        getPurchases( context ) {
+            return new Promise((resolve, reject) => {
+                axios.get(END_POINT + `/getPurchases`, { params: { userId: context.state.user.id }})
+                .then( res => {
+                    console.log('Purchases :', res.data)
+                    resolve(res.data)
+                })
+                .catch( err => {
+                    console.log('getting Purchases Failed', err)
+                    reject()
+                })
+            })
+        },
+        deletePurchase( context, data ) {
+            data.userId = context.state.user.id
+            return new Promise((resolve, reject) => {
+                axios.delete(END_POINT + `/deletePurchase`, { data: data })
+                .then( res => {
+                    context.commit( 'setSuccessCard',{ text: 'Product Removed Successfully', to: null}) 
+                    console.log('Product Removed', res.data)
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('Removing Product Failed', err)
+                    reject()
+                })
+            })
+        },
+
+        addOrder( context, data ) {
+            data.userId = context.state.user.id
+            return new Promise((resolve, reject) => {
+                axios.post(END_POINT + `/addOrder`, data )
+                .then( res => {
+                    context.commit( 'setSuccessCard',{ text: 'Your Order Created Successfully, Wait for Phone Cotnact', to: null}) 
+                    console.log('order created', res.data)
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('creating order Failed', err)
+                    reject()
+                })
+            })
+        },
+        getOrders( context ) {
+            return new Promise((resolve, reject) => {
+                axios.get(END_POINT + `/getOrders`, { params: { userId: context.state.user.id }})
+                .then( res => {
+                    console.log('orders :', res.data)
+                    resolve(res.data)
+                })
+                .catch( err => {
+                    console.log('getting orders Failed', err)
+                    reject()
+                })
+            })
+        },
+        deleteOrder( context, orderId ) {
+            return new Promise((resolve, reject) => {
+                axios.delete(END_POINT + `/deleteOrder`, { data: orderId })
+                .then( res => {
+                    context.commit( 'setSuccessCard',{ text: 'Order Removed Successfully', to: null}) 
+                    console.log('Order Removed', res.data)
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('Removing Order Failed', err)
+                    reject()
+                })
+            })
+        },
+
         // Action with refTokonIntrcptr
         ActionName( context, user ) {
             return new Promise( async (resolve, reject) => {

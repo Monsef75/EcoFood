@@ -1,10 +1,13 @@
 <template>
     
-    <main>
+    <div class="Loader f-center" style="height: 70vh;" v-if="loading">
+        <span class="Spinner" ></span>
+    </div>
+    <main v-else>
         <leaflet :stores="locations"/>
 
         <ul class="mt-3 gap-3">
-            <li class="bc-light-white3 mb-2" v-for="store in stores">
+            <li class="bc-light-white3 mb-2" v-for="store in products">
                 <img :src="store.img">
                 <div class="info flex-column f-between px-2 mt-2 c-white t-center">
                     <p class="s18">{{ store.title }}</p>
@@ -22,16 +25,13 @@
 <script>
     
     import leaflet from '@/components/elements/map.vue';
-    
+    import { mapActions } from 'vuex';
+
     export default {
     
         components: {leaflet},
         data() { return {
-            stores: [
-                { title: 'cafeteria El Salem',distance: '2.3km', img: '/Imgs/clientUI/stores/cafe1.jpg',},
-                { title: 'home cooked hummus',distance: '1.5km', img: '/Imgs/clientUI/stores/tradFood1.jpg',},
-                { title: 'half baked bread ',distance: '0.75km', img: '/Imgs/clientUI/stores/bread1.jpg',},
-            ],
+            products: [],
             locations : [
                 { title: "Sahara Tea", coords: [35.875, 7.113], type: 'cafeteria' },
                 { title: "Fresh Food Shop", coords: [35.878, 7.120], type: 'food' },
@@ -39,15 +39,32 @@
                 { title: "Fast Food Express", coords: [35.870, 7.118], type: 'food' },
                 { title: "Juice & Drinks", coords: [35.877, 7.105], type: 'cafeteria' },
             ],
+            loading: true,
         }},
         methods: {
-            
+            ...mapActions(['getProducts']),
         },
         computed: {
             
         },
         watch: {
             
+        },
+        mounted() {
+            const distances = ['2.3km','1.5km','0.75km']
+            this.getProducts().then( res=> {
+                this.loading = false
+                res = res.slice(0,3)
+                res.forEach( (product,index)=> {
+                    this.products.push({ 
+                        title: product.info.name,
+                        img: 'http://localhost:3000' + product.image,
+                        distance: distances[index],
+                    })
+                })
+                this.allOffers = this.offers
+                this.loading = false
+            })
         },
     }
     

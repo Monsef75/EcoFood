@@ -56,18 +56,23 @@
                     </aside>
                 </div>
                 <ul class="position-relative d-flex gap-3 mt-3 pb-2">
-                    <li class="position-relative overflow-hidden" :style="{ backgroundImage: `url(${offer.img})` }" v-for="offer in offers">
+                    <li class="offer position-relative overflow-hidden" :style="{ backgroundImage: `url(${offer.img})` }" 
+                    v-for="offer in offers" @click="offer.show = true">
                         <span class="px-2 c-white rd-10 s18 fw-bold">50%</span>
-                        <span class="px-2 c-white rd-10">{{ offer.title }}</span>
+                        <span class="px-2 c-white rd-10 trans3" :style="{ bottom: offer.show ? '35px' : '5px' }">{{ offer.title }}</span>
+                        <div class="bc-light-white w-100 d-flex align-items-center s18 px-3 trans3" 
+                        :style="{ transform: `translateY(${offer.show ? '165px' : '230px'})` }">
+                            <p class="fw-bold">{{ offer.info.price }}<i class="s14">Da</i></p>
+                            <i class="fa-solid fa-heart ms-auto c-red me-2" @click="AddFavorite(offer.id)"></i>
+                            <i class="fa-solid fa-cart-shopping c-blue" @click="AddPurchase(offer.id)"></i>
+                        </div>
                     </li>
                 </ul>
             </section>
 
         </section>
         <section v-else>
-            <div class="iconWrapper bc-c2 f-center rd-20 mb-3" style="width: 70px; height: 50px;" @click="isAddProductPage = false; this.$emit('changeTitle','Home')">
-                <i class="fa-solid fa-circle-arrow-left c-white s25"></i>
-            </div>
+            <goBack @click="isAddProductPage = false; this.$emit('changeTitle','Home')"/>
             <addProduct @backHome="GetProducts(true)"/>
         </section>
     </main>
@@ -76,13 +81,14 @@
 
 <script>
     
-    import searchBar from '@/components/elements/searchBar.vue';
     import addProduct from './addProduct.vue';
+    import searchBar from '@/components/elements/searchBar.vue';
+    import goBack from './elements/goBack.vue';
     import { mapActions } from 'vuex'
 
     export default {
     
-        components: {searchBar,addProduct},
+        components: {addProduct,goBack,searchBar,},
         data() { return {
             categories: [
                 {
@@ -125,10 +131,13 @@
                 }
                 this.getProducts().then( res=> {
                     res.forEach( product => {
-                        this.offers.push({ 
+                        this.offers.push({
+                            id: product._id,
                             title: `${product.info.category} Offer`,
                             img: 'http://localhost:3000' + product.image,
                             info: product.info,
+                            show: false,
+                            waiting: false,
                         })
                     })
                     this.allOffers = this.offers
@@ -141,7 +150,13 @@
                     offer.info.subCategory == subCategory
                 )
             },
-            ...mapActions(['getProducts']),
+            AddFavorite( productId ) {
+                this.addFavorite({ productId: productId })
+            },
+            AddPurchase( productId ) {
+                this.addPurchase({ productId: productId })
+            },
+            ...mapActions(['getProducts','addFavorite','addPurchase']),
         },
         computed: {
             
@@ -207,7 +222,6 @@
                 &:last-of-type {
                     background-color: var(--c2);
                     right: 10px;
-                    bottom: 5px;
                 }
             }
         }

@@ -50,8 +50,9 @@ run()
 const db = client.db('EcoFood')
 const members = db.collection('Members')
 const products = db.collection('Products')
+const orders = db.collection('Orders')
 
-require('./src/router.js')( app, members, products )
+require('./src/router.js')( app, members, products, orders )
 
 server.listen(process.env.PORT, () => {
     if (process.env.NODE_ENV === 'development') {
