@@ -73,20 +73,6 @@ const store = createStore({
     },
 
     actions: {
-        async refreshToken(context) {
-            try {
-                const res = await refTokonIntrcptr.post('/refreshToken', { refToken: context.state.userData.refToken })
-                console.log('✅ refreshToken', res.data)
-                context.state.token = res.data.token
-                const newUser = { ...context.state.user, token: res.data.token }
-                context.commit('setUser', newUser)
-                return res.data.token
-            } catch (err) {
-                console.error('❌ Failed to refresh token', err)
-                // context.commit('loggOut')
-                throw err
-            }
-        },
 
         signUp( context, user ) {
             return new Promise((resolve, reject) => {
@@ -98,8 +84,10 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Sign Up Failed', err)
-                    reject(err.response.data)
+                    console.log('Sign Up Failed', err.response.data.message)
+                    if (err.response.status === 409) {
+                        reject(err.response.data)
+                    }
                 })
             })
         },
@@ -113,8 +101,10 @@ const store = createStore({
                     resolve()
                 })
                 .catch( async err => {
-                    console.log('Logged In Failed', err)
-                    reject(err.response.data)
+                    console.log('Logged In Failed', err.response.data.message)
+                    if (err.response.status === 401) {
+                        reject(err.response.data)
+                    }
                 })
             })
         },
@@ -128,7 +118,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Adding Product Failed', err)
+                    console.log('Adding Product Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -141,7 +131,7 @@ const store = createStore({
                     resolve(res.data)
                 })
                 .catch( err => {
-                    console.log('getting Orders Failed', err)
+                    console.log('getting Orders Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -157,7 +147,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Adding Product Failed', err)
+                    console.log('Adding Product Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -170,7 +160,7 @@ const store = createStore({
                     resolve(res.data)
                 })
                 .catch( err => {
-                    console.log('getting Favorites Failed', err)
+                    console.log('getting Favorites Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -185,7 +175,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Removing Product Failed', err)
+                    console.log('Removing Product Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -201,7 +191,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Adding Product Failed', err)
+                    console.log('Adding Product Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -214,7 +204,7 @@ const store = createStore({
                     resolve(res.data)
                 })
                 .catch( err => {
-                    console.log('getting Purchases Failed', err)
+                    console.log('getting Purchases Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -229,7 +219,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Removing Product Failed', err)
+                    console.log('Removing Product Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -245,7 +235,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('creating order Failed', err)
+                    console.log('creating order Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -258,7 +248,7 @@ const store = createStore({
                     resolve(res.data)
                 })
                 .catch( err => {
-                    console.log('getting orders Failed', err)
+                    console.log('getting orders Failed', err.response.data.message)
                     reject()
                 })
             })
@@ -272,23 +262,9 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Removing Order Failed', err)
+                    console.log('Removing Order Failed', err.response.data.message)
                     reject()
                 })
-            })
-        },
-
-        // Action with refTokonIntrcptr
-        ActionName( context, user ) {
-            return new Promise( async (resolve, reject) => {
-                try {
-                    const res = await refTokonIntrcptr.get('/Api')
-                    console.log('Api Success', res.data)
-                    resolve()
-                } catch (err) {
-                    console.error('Api Failed', err)
-                    throw err
-                }
             })
         },
     },

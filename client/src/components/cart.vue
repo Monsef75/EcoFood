@@ -36,14 +36,18 @@
 
             </form>
 
-            <ul class="items" v-else-if="isCart">
+            <ul class="purchases" v-else-if="isCart">
                 <li class="item position-relative bc-light-white3 rd-10 d-flex align-items-center gap-3 mb-3" v-for="(purchase,index) in purchases" >
                     <div class="img" style="width: 80px; height: 80px;" :style="{ backgroundImage: `url(${purchase.img})` }"></div>
                     <div class="text">
                         <p class="c-white s18 fw-bold letter-p-05 mb-1">{{ purchase.name }}</p>
                         <p class="c-white s16 fw-bold letter-p-05">{{ purchase.price }}Da</p>
                     </div>
-                    <i class="fa-solid fa-trash c-red s20 position-absolute" style="right: 20px;" @click="DeletePurchase( purchase.id )"></i>
+                    <div class="ButtonSpinner position-absolute" style="right: 20px; top: 27px;" v-if="purchase.waiting">
+                        <span class="Spinner"></span>
+                    </div> 
+                    <i class="fa-solid fa-trash c-red s20 position-absolute" style="right: 20px;" v-else
+                    @click="DeletePurchase( purchase.id,index )"></i>
                 </li>
             </ul>
 
@@ -164,11 +168,12 @@
                     this.loading = false
                 })
             },
-            DeletePurchase( productId ) {
+            DeletePurchase( productId,index ) {
+                this.purchases[index].waiting = true
                 this.deletePurchase({ productId: productId }).then( res => {
                     this.purchases = this.purchases.filter( favorite => favorite.id != productId )
                     if (this.purchases.length == 0) this.empty = true
-                })
+                }).catch( ()=> { this.purchases[index].waiting = false })
             },
             AddOrder() {
                 const order = {
@@ -221,7 +226,7 @@
                 this.deleteOrder({ id: orderId }).then( ()=> {
                     this.orders.splice(index, 1)
                     if (this.orders.length == 0) this.empty = true
-                })
+                }).catch( ()=> { this.orders[index].waiting = false })
             },
             ...mapActions(['getPurchases','deletePurchase','addOrder','getOrders','deleteOrder']),
         },

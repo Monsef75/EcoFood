@@ -73,13 +73,13 @@
             empty: false,
         }},
         methods: {
-            DeleteProduct( productId, Index ) {
-                this.Products[Index].Waiting = true
+            DeleteProduct( productId, index ) {
+                this.Products[index].waiting = true
                 this.deleteProduct({ id: productId }).then( ()=> {
-                    this.Products.splice( Index,1 )
+                    this.Products.splice( index,1 )
                     this.boxes.forEach( box => box.data -= 1 )
                     if (this.Products.length == 0) this.empty = true
-                })
+                }).catch( ()=> { this.Products[index].waiting = false })
             },
             ...mapActions(['getProducts', 'deleteProduct']),
         },

@@ -79,12 +79,12 @@
                 Drinks: ['Drinks & Juices',],
             },
             productControll: {
-                'Traditionel Food': { price: 300, duration: 2 },
-                'Fast Food': { price: 250, duration: 2 },
-                'Fruits & Veget': { price: 200, duration: 2 },
-                'Bakery': { price: 50, duration: 2 },
-                'Patesries': { price: 100, duration: 2 },
-                'Drinks & Juices': { price: 80, duration: 2 },
+                'Traditionel Food': { maxPrice: 300, duration: 2 },
+                'Fast Food': { maxPrice: 250, duration: 2 },
+                'Fruits & Veget': { maxPrice: 200, duration: 2 },
+                'Bakery': { maxPrice: 50, duration: 2 },
+                'Patesries': { maxPrice: 100, duration: 2 },
+                'Drinks & Juices': { maxPrice: 80, duration: 2 },
             },
 
             img: {
@@ -143,9 +143,11 @@
 
             AddProduct() {
                 this.waiting = true
+                const selectedControl = this.productControll[this.info.subCategory]
                 const form = new FormData()
                 , product = { 
                     info: this.info,
+                    duration: selectedControl.duration,
                     addedBy: {
                         id: this.$store.state.user.id,
                         fullName: this.$store.state.user.fullName,
@@ -158,13 +160,13 @@
                 this.addProduct( form ).then( ()=> {
                     this.waiting = false
                     this.$emit('backHome')
-                })
+                }).catch( ()=> { this.waiting = false })
             },
             ...mapActions(['addProduct']),
         },
         computed: {
             currentMaxPrice() {
-                if (this.info.subCategory) return this.productControll[this.info.subCategory].price
+                if (this.info.subCategory) return this.productControll[this.info.subCategory].maxPrice
                 else return null
             },
             currentDurration() {

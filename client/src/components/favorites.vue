@@ -21,7 +21,11 @@
                     <i class="fa-solid fa-star"></i>
                 </p>
             </div>
-            <i class="fa-solid fa-trash c-red s20 position-absolute" style="right: 20px;" @click="DeleteFavorite( favorite.id )"></i>
+            <div class="ButtonSpinner position-absolute" style="right: 20px; top: 27px;" v-if="favorite.waiting">
+                <span class="Spinner"></span>
+            </div> 
+            <i class="fa-solid fa-trash c-red s20 position-absolute" style="right: 20px;" 
+            @click="DeleteFavorite( favorite.id,index )" v-else></i>
         </div>
     </section>
     
@@ -38,14 +42,16 @@
             loading: true,
             empty: false,
             favorites: [],
+            waiting: false,
 
         }},
         methods: {
-            DeleteFavorite( productId ) {
+            DeleteFavorite( productId,index ) {
+                this.favorites[index].waiting = true
                 this.deleteFavorite({ productId: productId }).then( res => {
                     this.favorites = this.favorites.filter( favorite => favorite.id != productId )
                     if (this.favorites.length == 0) this.empty = true
-                })
+                }).catch( ()=> { this.favorites[index].waiting = false })
             },
             ...mapActions(['getFavorites','deleteFavorite']),
         },
@@ -56,10 +62,14 @@
             this.getFavorites().then( res=> {
                 if (res.length == 0) this.empty = true
                 else { 
+                    
                     res.forEach( product => {
+                        const name = product.info.name.length > 10
+                        ? product.info.name.slice(0, 8) + '...'
+                        : product.info.name
                         this.favorites.push({
                             id: product._id,
-                            name: product.info.subCategory + ' : ' + product.info.name,
+                            name: product.info.subCategory + ' : ' + name,
                             img: 'http://localhost:3000' + product.image,
                             disc: product.info.price + 'Da | 4.5',
                             waiting: false,

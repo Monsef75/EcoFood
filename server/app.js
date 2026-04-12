@@ -54,7 +54,10 @@ const orders = db.collection('Orders')
 
 require('./src/router.js')( app, members, products, orders )
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, async () => {
+
+    await products.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
+    
     if (process.env.NODE_ENV === 'development') {
         console.log(`Server Running locally on ${process.env.PORT}`)
     } else {

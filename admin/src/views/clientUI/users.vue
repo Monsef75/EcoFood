@@ -70,13 +70,13 @@
             empty: false,
         }},
         methods: {
-            DeleteUser( userId, Index ) {
-                this.Users[Index].Waiting = true
+            DeleteUser( userId, index ) {
+                this.Users[index].waiting = true
                 this.deleteUser({ id: userId }).then( ()=> {
-                    this.Users.splice( Index,1 )
+                    this.Users.splice( index,1 )
                     this.boxes.forEach( box => box.data -= 1 )
                     if (this.Users.length == 0) this.empty = true
-                })
+                }).catch( ()=> { this.Users[index].waiting = false })
             },
             ...mapActions(['setUsers','deleteUser']),
         },
