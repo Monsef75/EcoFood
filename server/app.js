@@ -16,7 +16,7 @@ app.use('/uploads', express.static('uploads'));
 
 // 🔹 SOCKET.IO SETUP
 app.use(cors({
-    origin: FrontUrl,
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
 }))
 app.use(bodyParser.json())
