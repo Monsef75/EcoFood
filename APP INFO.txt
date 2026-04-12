@@ -1,0 +1,7 @@
+----------- Admin Panel -----------
+
+live : https://ecofoodadminpanel.onrender.com
+
+testing: 
+cd admin
+npm run dev

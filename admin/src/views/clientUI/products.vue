@@ -25,7 +25,8 @@
 
                 <tr class="trans3" v-for="(product,Index) in Products">
                     <th scope="row">{{ Index + 1 }}</th>
-                    <th><img :src="'http://localhost:3000' + product.image" style="width: 45px;height: 45px;border-radius: 5px;"></th>
+                    <th><div class="img" style="width: 45px;height: 45px;border-radius: 5px;" :style="{backgroundImage: `url(${END_POINT + product.image})`}"></div></th>
+                    <!-- <img :src="END_POINT + product.image" > -->
                     <th>{{ product.name }}</th>
                     <th>{{ product.category }}</th>
                     <th>{{ product.price }} <i class="s11">Dz</i> </th>
@@ -59,6 +60,7 @@
     export default {
         components: {head_,tableSlot,boxes},
         data() { return {
+            END_POINT: import.meta.env.VITE_END_POINT,
             boxes: [
                 { icon: 'fa-cubes', title: 'All Products', color: '#1877F2', data: null,},
                 { icon: 'fa-arrow-down-wide-short', title: 'Added This Month', color: '#FE2C55', data: null,},
@@ -105,6 +107,11 @@
 </script>
 
 <style scoped lang="scss">
+
+.img {
+    background-size: cover;
+    background-position: center;
+}
 
 tr {
     color: var(--Light-White2);
