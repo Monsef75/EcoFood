@@ -53,11 +53,16 @@ const products = db.collection('Products')
 const orders = db.collection('Orders')
 
 require('./src/router.js')( app, members, products, orders )
+const { cleanUnusedUploads } = require('./src/services/cleanUplaods.js')
 
 server.listen(process.env.PORT, async () => {
 
     await products.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
-    
+    cleanUnusedUploads(products)
+    setInterval(() => {
+        cleanUnusedUploads(products)
+    }, 24 * 60 * 60 * 1000)
+
     if (process.env.NODE_ENV === 'development') {
         console.log(`Server Running locally on ${process.env.PORT}`)
     } else {
