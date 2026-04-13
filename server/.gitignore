@@ -65,10 +65,6 @@ Icon?
 *.sqlite
 *.db
 
-# Uploads / Assets (optional)
-uploads/
-assets/uploads/
-public/uploads/
 
 # ----------------------------
 # ✅ Optional safe folders
