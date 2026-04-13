@@ -1,3 +1,10 @@
+----------- Techs -----------
+
+Front End : bootstrap) | sass) | leaflet(For Map)) | vue.js) | javaScript
+Back End : bcryptjs + jsonwebtoken(for security) | mongodb(for Data Base)) | express.js node.js
+api : axios
+
+
 ----------- Admin Panel -----------
 
 live : https://ecofoodadminpanel.onrender.com
@@ -5,3 +12,7 @@ live : https://ecofoodadminpanel.onrender.com
 testing: 
 cd admin
 npm run dev
+
+
+-----
+displaying imgs from the server + convert apk

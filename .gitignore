@@ -91,13 +91,6 @@ Icon?
 *.old
 
 # ----------------------------
-# 🖼️ Uploads / Assets
-# ----------------------------
-uploads/
-assets/uploads/
-public/uploads/
-
-# ----------------------------
 # 🧪 Cypress (if used)
 # ----------------------------
 /cypress/videos/
