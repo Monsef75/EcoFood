@@ -19,10 +19,6 @@ module.exports = (app, members, products, orders) => {
 
             const { fullName, email, password, createdAt } = JSON.parse(req.body.user)
 
-            if (!fullName || !email || !password) {
-                return res.status(400).send(['Missing required sign up fields'])
-            }
-
             const isEmailExist = await members.findOne({ email: email.toLowerCase() })
 
             if (isEmailExist) {
@@ -56,7 +52,7 @@ module.exports = (app, members, products, orders) => {
 
             res.send({ token, refToken, user: jwtUser })
         } catch (err) {
-            res.status(500).send(['Failed to sign up'])
+            res.status(500).send({ message: 'failed' })
         }
     })
     app.get('/signIn', async (req, res) => {

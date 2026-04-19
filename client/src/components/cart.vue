@@ -38,7 +38,7 @@
 
             <ul class="purchases" v-else-if="isCart">
                 <li class="item position-relative bc-light-white3 rd-10 d-flex align-items-center gap-3 mb-3" v-for="(purchase,index) in purchases" >
-                    <div class="img" style="width: 80px; height: 80px;" :style="{ backgroundImage: `url(${purchase.img})` }"></div>
+                    <div class="img" style="width: 80px; height: 80px;" :style="{ backgroundImage: `url(${END_POINT + purchase.img})` }"></div>
                     <div class="text">
                         <p class="c-white s18 fw-bold letter-p-05 mb-1">{{ purchase.name }}</p>
                         <p class="c-white s16 fw-bold letter-p-05">{{ purchase.price }}Da</p>
@@ -92,7 +92,7 @@
                         <aside class="products d-flex flex-column gap-2 overflow-auto" >
                             <h4 class="c-c1 t-center fw-bold mb-2">Products</h4>
                             <div class="img rd-10" style="width: 100px; height: 100px;" v-for="product in order.products" 
-                            :style="{ backgroundImage: `url(${ 'http://localhost:3000' + product.image})` }"></div>
+                            :style="{ backgroundImage: `url(${ END_POINT + product.image})` }"></div>
                         </aside>
                     </div>
                 </li>
@@ -128,6 +128,7 @@
     
         components: {goBack},
         data() { return {
+            END_POINT: import.meta.env.VITE_END_POINT,
             loading: true,
             empty: false,
             isCart: true,
@@ -159,7 +160,7 @@
                                 id: product._id,
                                 addedBy: product.addedBy.id,
                                 name: product.info.subCategory + ' : ' + name,
-                                img: 'http://localhost:3000' + product.image,
+                                img: product.image,
                                 price: product.info.price,
                                 waiting: false,
                             })

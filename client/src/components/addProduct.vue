@@ -43,11 +43,10 @@
                 <span :class="location ? 'c-white' : 'c-light-white2'" v-else>{{ location ? location : 'Set Your Location'}}</span>
             </div>
         </form>
-        <div class="warning d-flex align-items-center bc-light-grey px-3 py-2 rd-10 gap-3 c-white mb-3" >
-            <!-- v-if="this.info.subCategory" {{ currentDurration }}-->
+        <div class="warning d-flex align-items-center bc-light-grey px-3 py-2 rd-10 gap-3 c-white mb-3" v-if="this.info.subCategory">
             <i class="fa-solid fa-circle-exclamation s25"></i>
             <p class="t-capital">
-                Notice that Your product will be automatically deleted after 2 days.
+                Notice that Your product will be automatically deleted after {{ currentDurration }} days.
             </p>
         </div>
         <div class="ButtonSpinner bc-bttn-linear rd-10" style="height: 50px;" v-if="waiting">
@@ -79,12 +78,12 @@
                 Drinks: ['Drinks & Juices',],
             },
             productControll: {
-                'Traditionel Food': { maxPrice: 300, duration: 2 },
+                'Traditionel Food': { maxPrice: 300, duration: 3 },
                 'Fast Food': { maxPrice: 250, duration: 2 },
-                'Fruits & Veget': { maxPrice: 200, duration: 2 },
-                'Bakery': { maxPrice: 50, duration: 2 },
+                'Fruits & Veget': { maxPrice: 200, duration: 3 },
+                'Bakery': { maxPrice: 50, duration: 1 },
                 'Patesries': { maxPrice: 100, duration: 2 },
-                'Drinks & Juices': { maxPrice: 80, duration: 2 },
+                'Drinks & Juices': { maxPrice: 80, duration: 4 },
             },
 
             img: {

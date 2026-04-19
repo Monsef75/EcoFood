@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">OceantTrack</string>
-    <string name="title_activity_main">OceantTrack</string>
-    <string name="package_name">com.oceantrack.client</string>
-    <string name="custom_url_scheme">com.oceantrack.client</string>
+    <string name="app_name">EcoFood</string>
+    <string name="title_activity_main">EcoFood</string>
+    <string name="package_name">com.ecofood.client</string>
+    <string name="custom_url_scheme">com.ecofood.client</string>
 </resources>

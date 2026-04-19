@@ -53,7 +53,7 @@ const products = db.collection('Products')
 const orders = db.collection('Orders')
 
 require('./src/router.js')( app, members, products, orders )
-const { cleanUnusedUploads } = require('./src/services/cleanUplaods.js')
+const { cleanUnusedUploads } = require('./src/utils/cleanUplaods.js')
 
 server.listen(process.env.PORT, async () => {
 

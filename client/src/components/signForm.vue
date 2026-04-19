@@ -146,12 +146,10 @@
         data() { return {
             signSwitch: true,
             showPassword: false,
-
-            clientTypes: ['Customer','Owner','Delivrey'],
             currentTypeIndex: 0,
             user: {
-                fullName: 'monsef',
-                email: 'momo8ghannam@gmail.com',
+                fullName: null,
+                email: null,
                 password: null,
             },
             ShowPassword: false,
@@ -186,15 +184,9 @@
                     fullName: this.user.fullName,
                     email: this.user.email,
                     password: this.user.password,
-                    // clientType: this.ClientType.toLowerCase(),
                     createdAt: formatDate(new Date())
                 }
                 form.append('user', JSON.stringify(user))
-
-                // if (user.clientType == 'delivrey') {
-                //     form.append('imgs', this.user.idCard )
-                //     form.append('imgs', this.user.idCard )
-                // }
 
                 this.signUp( form ).then( ()=> { this.waiting = false })                
                 .catch( err => {
@@ -282,9 +274,6 @@
                 return (
                     this.errors.email || this.errors.password
                 )
-            },
-            ClientType() {
-                return this.clientTypes[this.currentTypeIndex]
             },
         },
     }

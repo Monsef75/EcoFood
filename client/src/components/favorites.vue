@@ -13,7 +13,7 @@
         </div>
     
         <div class="Favorite position-relative bc-light-white3 rd-10 d-flex align-items-center gap-3 mb-3" v-for="(favorite,index) in favorites" v-else>
-            <div class="img" style="width: 80px; height: 80px;" :style="{ backgroundImage: `url(${favorite.img})` }"></div>
+            <div class="img" style="width: 80px; height: 80px;" :style="{ backgroundImage: `url(${END_POINT + favorite.img})` }"></div>
             <div class="text">
                 <p class="c-white s18 fw-bold letter-p-05 mb-1">{{ favorite.name }}</p>
                 <p class="c-light-white s16 fw-bold letter-p-05">
@@ -39,6 +39,7 @@
     
         components: {},
         data() { return {
+            END_POINT: import.meta.env.VITE_END_POINT,
             loading: true,
             empty: false,
             favorites: [],
@@ -70,7 +71,7 @@
                         this.favorites.push({
                             id: product._id,
                             name: product.info.subCategory + ' : ' + name,
-                            img: 'http://localhost:3000' + product.image,
+                            img: product.image,
                             disc: product.info.price + 'Da | 4.5',
                             waiting: false,
                         })

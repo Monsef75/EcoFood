@@ -5,9 +5,9 @@
         <section v-if="!isAddProductPage">
             <section class="head d-flex gap-2">
                 <searchBar class="mb-3 flex-grow-1"/>
-                <span class="iconWrapper f-center rounded-circle" @click="isAddProductPage = true;this.$emit('changeTitle','Add Your Prodcut')">
+                <div class="iconWrapper f-center rounded-circle" @click="isAddProductPage = true;this.$emit('changeTitle','Add Your Prodcut')">
                     <i class="fa-solid fa-plus c-white s20"></i>
-                </span>
+                </div>
             </section>
             
             <section class="category" v-for="category in categories">
@@ -54,16 +54,19 @@
                     <aside v-if="offers.length != allOffers.length" @click="offers = allOffers">
                         <span class="letter-p-05 w-700 c-red">reset</span>
                     </aside>
+                    <aside v-else @click="offers = [];GetProducts()">
+                        <i class="fa-solid fa-arrows-rotate c-c1"></i>
+                    </aside>
                 </div>
                 <ul class="position-relative d-flex gap-3 mt-3 pb-2">
-                    <li class="offer position-relative overflow-hidden" :style="{ backgroundImage: `url(${offer.img})` }" 
+                    <li class="offer position-relative overflow-hidden" :style="{ backgroundImage: `url(${END_POINT + offer.img})` }"
                     v-for="offer in offers" @click="offer.show = true">
                         <span class="px-2 c-white rd-10 s18 fw-bold">50%</span>
                         <span class="px-2 c-white rd-10 trans3" :style="{ bottom: offer.show ? '35px' : '5px' }">{{ offer.title }}</span>
                         <div class="bc-light-white w-100 d-flex align-items-center s18 px-3 trans3" 
                         :style="{ transform: `translateY(${offer.show ? '165px' : '230px'})` }">
                             <p class="fw-bold">{{ offer.info.price }}<i class="s14">Da</i></p>
-                            <i class="fa-solid fa-heart ms-auto c-red me-2" @click="AddFavorite(offer.id)"></i>
+                            <i class="fa-regular fa-heart ms-auto c-red me-2" @click="AddFavorite(offer.id)"></i>
                             <i class="fa-solid fa-cart-shopping c-blue" @click="AddPurchase(offer.id)"></i>
                         </div>
                     </li>
@@ -90,6 +93,7 @@
     
         components: {addProduct,goBack,searchBar,},
         data() { return {
+            END_POINT: import.meta.env.VITE_END_POINT,
             categories: [
                 {
                     title : 'Food',
@@ -134,7 +138,7 @@
                         this.offers.push({
                             id: product._id,
                             title: `${product.info.category} Offer`,
-                            img: 'http://localhost:3000' + product.image,
+                            img: product.image,
                             info: product.info,
                             show: false,
                             waiting: false,
@@ -175,7 +179,7 @@
     
     .head {
         .iconWrapper {
-            width: 50px;
+            width: 55px;
             height: 50px;
             background-color: var(--Facebook);
         }

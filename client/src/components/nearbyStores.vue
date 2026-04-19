@@ -8,7 +8,7 @@
 
         <ul class="mt-3 gap-3">
             <li class="bc-light-white3 mb-2" v-for="store in products">
-                <img :src="store.img">
+                <img :src="END_POINT + store.img">
                 <div class="info flex-column f-between px-2 mt-2 c-white t-center">
                     <p class="s18">{{ store.title }}</p>
                     <p class="s16 fw-bold">{{ store.distance }}</p>
@@ -31,6 +31,7 @@
     
         components: {leaflet},
         data() { return {
+            END_POINT: import.meta.env.VITE_END_POINT,
             products: [],
             locations : [
                 { title: "Sahara Tea", coords: [35.875, 7.113], type: 'cafeteria' },
@@ -58,7 +59,7 @@
                 res.forEach( (product,index)=> {
                     this.products.push({ 
                         title: product.info.name,
-                        img: 'http://localhost:3000' + product.image,
+                        img: product.image,
                         distance: distances[index],
                     })
                 })
