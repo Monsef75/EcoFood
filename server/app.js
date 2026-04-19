@@ -14,38 +14,11 @@ const FrontUrl = process.env.FRONT_URL
 // Serve the files
 app.use('/uploads', express.static('uploads'));
 
-
-
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost',
-    'capacitor://localhost',
-]
-
-const corsOptions = {
-    origin(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true)
-        } else {
-            callback(null, false)
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}
-
-app.use(cors(corsOptions))
-app.options('*', cors(corsOptions))
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-
-
-// app.use(cors({
-//     origin: "*",
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-// }))
+// 🔹 SOCKET.IO SETUP
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}))
 app.use(bodyParser.json())
 
 // const io = new Server(server, {
