@@ -11,7 +11,7 @@ const verifyToken = require('./middlewares/verifyToken.js')
 
 module.exports = (app, members, products, orders) => {
 
-    app.post('/signUp', async (req, res) => {
+    app.post('/signUp',upload.none(), async (req, res) => {
             const { fullName, email, password, createdAt } = JSON.parse(req.body.user)
 
             const isEmailExist = await members.findOne({ email: email.toLowerCase() })
