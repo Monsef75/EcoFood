@@ -185,8 +185,10 @@
                     email: this.user.email,
                     password: this.user.password,
                     createdAt: formatDate(new Date())
-                }                
-                this.signUp( user ).then( ()=> { this.waiting = false })                
+                }
+                form.append('user', JSON.stringify(user))
+
+                this.signUp( form ).then( ()=> { this.waiting = false })                
                 .catch( err => {
                     this.errors.server = err
                     this.waiting = false
