@@ -12,8 +12,6 @@ const verifyToken = require('./middlewares/verifyToken.js')
 module.exports = (app, members, products, orders) => {
 
     app.post('/signUp', async (req, res) => {
-        try {
-
             const { fullName, email, password, createdAt } = JSON.parse(req.body.user)
 
             const isEmailExist = await members.findOne({ email: email.toLowerCase() })
@@ -48,9 +46,6 @@ module.exports = (app, members, products, orders) => {
             const refToken = jwt.sign(jwtUser, refSecKey, { expiresIn: '14d' })
 
             res.send({ token, refToken, user: jwtUser })
-        } catch (err) {
-            res.status(500).send({ message: 'failed' })
-        }
     })
     app.get('/signIn', async (req, res) => {
         try {
