@@ -84,7 +84,7 @@ const store = createStore({
                     resolve()
                 })
                 .catch( err => {
-                    console.log('Sign Up Failed', err.response.data.message)
+                    console.log('Sign Up Failed')
                     if (err.response.status === 409) {
                         reject(err.response.data)
                     }
@@ -100,7 +100,7 @@ const store = createStore({
                     context.commit( 'setSuccessCard',{ text: 'Logn In Successfully', to: null}) 
                     resolve()
                 })
-                .catch( async err => {
+                .catch( err => {
                     console.log('Logged In Failed', err.response.data.message)
                     if (err.response.status === 401) {
                         reject(err.response.data)
