@@ -13,9 +13,6 @@ module.exports = (app, members, products, orders) => {
 
     app.post('/signUp', async (req, res) => {
         try {
-            if (!req.body.user) {
-                return res.status(400).send(['User data is required'])
-            }
 
             const { fullName, email, password, createdAt } = JSON.parse(req.body.user)
 
