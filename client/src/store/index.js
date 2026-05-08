@@ -123,9 +123,9 @@ const store = createStore({
                 })
             })
         },
-        getProducts( context ) {
+        getProducts( context, isProfile ) {
             return new Promise((resolve, reject) => {
-                axios.get(END_POINT + `/getProducts`)
+                axios.get(END_POINT + `/getProducts`, { params: { userId: isProfile ? context.state.user.id : null}})
                 .then( res => {
                     console.log('Products :', res.data)
                     resolve(res.data)

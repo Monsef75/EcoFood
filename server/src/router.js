@@ -11,8 +11,8 @@ const verifyToken = require('./middlewares/verifyToken.js')
 
 module.exports = (app, members, products, orders) => {
 
-    app.post('/signUp',upload.none(), async (req, res) => {
-            const { fullName, email, password, createdAt } = JSON.parse(req.body.user)
+    app.post('/signUp', async (req, res) => {
+            const { fullName, email, password, createdAt } = req.body
 
             const isEmailExist = await members.findOne({ email: email.toLowerCase() })
 
@@ -105,10 +105,8 @@ module.exports = (app, members, products, orders) => {
             }
 
             const now = new Date()
-            const expiresAt = new Date(now.getTime() + duration_ * 24 * 60 * 60 * 1000)
-
-            // for test 1 minute use this instead:
-            // const expiresAt = new Date(now.getTime() + 1 * 60 * 1000)
+            // const expiresAt = new Date(now.getTime() + duration_ * 24 * 60 * 60 * 1000)
+            const expiresAt = new Date(now.getTime() + 1 * 60 * 1000) // for test 1 minute use this instead:
 
             const product = {
                 info: info,
@@ -116,6 +114,7 @@ module.exports = (app, members, products, orders) => {
                 createdAt: createdAt,
                 expiresAt: expiresAt,
                 image: `/uploads/${req.file.filename}`,
+                active: true,
             }
 
             const result = await products.insertOne(product)
@@ -132,7 +131,13 @@ module.exports = (app, members, products, orders) => {
     })
     app.get('/getProducts', async (req, res) => {
         try {
-            const Products = await products.find().toArray()
+            let Products
+            if (req.query.userId) {
+                Products = await products.find({ 'addedBy.id': req.query.userId }).toArray()
+            }
+            else {
+                Products = await products.find({ 'active': true }).toArray()
+            }
             res.send(Products)
         } catch (err) {
             console.log('getProducts failed', err)

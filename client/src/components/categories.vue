@@ -21,7 +21,7 @@
                     </aside>
 
                 </div>
-                <ul class="content d-flex flex-wrap gap-2 py-2 px-2 bc-light-white3">
+                <ul class="content d-flex gap-2 py-2 px-2 bc-light-white3">
                     <li class="" v-for="subCategory in category.subCategories" @click="filterProducts( category.title, subCategory.title )">
                         <div class="imgWrapper position-relative f-center mx-auto">
                             <img :src="subCategory.img" class="" style="width: 80px;">
@@ -100,6 +100,7 @@
                     subCategories : [
                         { title: 'Traditionel Food', img: '/Imgs/clientUI/categories/food.png',},
                         { title: 'Fast Food', img: '/Imgs/clientUI/categories/fast-food.png',},
+                        { title: 'Fish', img: '/Imgs/clientUI/categories/fish.png',},
                     ],
                 },
                 {
@@ -185,7 +186,21 @@
         }
     }
     .category {
-        ul li {       
+        .content {
+            overflow: auto;
+            scroll-behavior: smooth;
+            li {
+                flex: 0 0 auto;
+            }
+        }
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ul li {
             .imgWrapper {
                 width: 100px;
                 height: 100px;
@@ -214,8 +229,8 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            border: 5px solid hsla(64, 89%, 34%, 0.4);
-            border-radius: 20px;
+            border: 5px solid hsl(60, 2%, 24%);
+            border-radius: 30px;
             span {
                 position: absolute;
                 &:first-of-type {

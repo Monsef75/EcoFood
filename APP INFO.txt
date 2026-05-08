@@ -2,6 +2,7 @@
 
 Front End : bootstrap) | sass) | leaflet(For Map)) | vue.js) | javaScript
 Back End : bcryptjs + jsonwebtoken(for security) | mongodb(for Data Base)) | express.js node.js
+App (Web -> Apk) : Capacitor
 api : axios
 
 

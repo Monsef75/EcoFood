@@ -29,7 +29,7 @@
 
     import { markRaw } from 'vue'
     import sign from '@/components/signForm.vue'
-    import settings from '@/components/settings.vue'
+    import profile from '@/components/profile.vue'
     import categories from '@/components/categories.vue'
     import favorites from '@/components/favorites.vue'
     import stores from '@/components/nearbyStores.vue'
@@ -40,8 +40,8 @@
         data() { return {
             responsive: window.innerWidth,
             pages: {
-                customer: [markRaw(categories),markRaw(favorites),markRaw(stores),markRaw(cart),markRaw(settings)],
-                custHeaders: ['Home','Favorites','Nearby Stores','Cart & Orders','Settings'],
+                customer: [markRaw(categories),markRaw(favorites),markRaw(stores),markRaw(cart),markRaw(profile)],
+                custHeaders: ['Home','Favorites','Nearby Stores','Cart & Orders','Profile'],
             },
             currentPageIndex: 0,
 
@@ -58,7 +58,7 @@
 
             icons() {
                 return [
-                    { pageIndex: 4, name: 'fa-bars'},
+                    { pageIndex: 4, name: 'fa-user'},
                     { pageIndex: 1, name: 'fa-heart'},
                     { pageIndex: 0, name: 'fa-home'},
                     { pageIndex: 2, name: 'fa-location-dot'},

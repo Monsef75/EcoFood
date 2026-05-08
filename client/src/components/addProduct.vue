@@ -73,7 +73,7 @@
         data() { return {
             categories : ['Food','Sweets','Drinks',],
             subCategories : {
-                Food: ['Traditionel Food','Fast Food'],
+                Food: ['Traditionel Food','Fast Food','Fish'],
                 Sweets: ['Fruits & Veget','Bakery','Patesries'],
                 Drinks: ['Drinks & Juices',],
             },

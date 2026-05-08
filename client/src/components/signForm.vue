@@ -178,7 +178,6 @@
             },
             SignUp() {
                 this.waiting = true
-                const form = new FormData()
                 
                 let user = { 
                     fullName: this.user.fullName,
@@ -186,9 +185,8 @@
                     password: this.user.password,
                     createdAt: formatDate(new Date())
                 }
-                form.append('user', JSON.stringify(user))
 
-                this.signUp( form ).then( ()=> { this.waiting = false })                
+                this.signUp( user ).then( ()=> { this.waiting = false })                
                 .catch( err => {
                     this.errors.server = err
                     this.waiting = false
