@@ -80,6 +80,7 @@
             productControll: {
                 'Traditionel Food': { maxPrice: 300, duration: 3 },
                 'Fast Food': { maxPrice: 250, duration: 2 },
+                'Fish': { maxPrice: 400, duration: 2 },
                 'Fruits & Veget': { maxPrice: 200, duration: 3 },
                 'Bakery': { maxPrice: 50, duration: 1 },
                 'Patesries': { maxPrice: 100, duration: 2 },

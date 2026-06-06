@@ -1,7 +1,7 @@
 ----------- Techs -----------
 
-Front End : bootstrap) | sass) | leaflet(For Map)) | vue.js) | javaScript
-Back End : bcryptjs + jsonwebtoken(for security) | mongodb(for Data Base)) | express.js node.js
+Front End : css | bootstrap | sass | leaflet(For Map) | vue.js | javaScript
+Back End : bcryptjs + jsonwebtoken(for security) | mongodb(for Data Base) | express.js node.js
 App (Web -> Apk) : Capacitor
 api : axios
 
@@ -14,6 +14,3 @@ testing:
 cd admin
 npm run dev
 
-
------
-displaying imgs from the server + convert apk
