@@ -105,8 +105,8 @@ module.exports = (app, members, products, orders) => {
             }
 
             const now = new Date()
-            // const expiresAt = new Date(now.getTime() + duration_ * 24 * 60 * 60 * 1000)
-            const expiresAt = new Date(now.getTime() + 1 * 60 * 1000) // for test 1 minute use this instead:
+            const expiresAt = new Date(now.getTime() + duration_ * 24 * 60 * 60 * 1000)
+            // const expiresAt = new Date(now.getTime() + 1 * 60 * 1000) // for test 1 minute use this instead:
 
             const product = {
                 info: info,
