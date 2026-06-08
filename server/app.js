@@ -53,31 +53,31 @@ const products = db.collection('Products')
 const orders = db.collection('Orders')
 
 require('./src/router.js')( app, members, products, orders )
-async function expireProducts(products) {
-    try {
-        const now = new Date()
+// async function expireProducts(products) {
+//     try {
+//         const now = new Date()
 
-        await products.updateMany(
-            {
-                active: true,
-                expiresAt: { $lte: now }
-            },
-            {
-                $set: { active: false }
-            }
-        )
-    } catch (err) {
-        console.log('expireProducts failed', err)
-    }
-}
+//         await products.updateMany(
+//             {
+//                 active: true,
+//                 expiresAt: { $lte: now }
+//             },
+//             {
+//                 $set: { active: false }
+//             }
+//         )
+//     } catch (err) {
+//         console.log('expireProducts failed', err)
+//     }
+// }
 
 
 server.listen(process.env.PORT, async () => {
 
-    expireProducts(products)
-    setInterval(() => {
-        expireProducts(products)
-    }, 5 * 60 * 1000)
+    // expireProducts(products)
+    // setInterval(() => {
+    //     expireProducts(products)
+    // }, 1 * 60 * 1000)
 
     if (process.env.NODE_ENV === 'development') {
         console.log(`Server Running locally on ${process.env.PORT}`)

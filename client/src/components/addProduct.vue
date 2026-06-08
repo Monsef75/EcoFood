@@ -78,13 +78,15 @@
                 Drinks: ['Drinks & Juices',],
             },
             productControll: {
-                'Traditionel Food': { maxPrice: 300, duration: 3 },
+                'Traditionel Food': { maxPrice: 300, duration: 2 },
                 'Fast Food': { maxPrice: 250, duration: 2 },
                 'Fish': { maxPrice: 400, duration: 2 },
                 'Fruits & Veget': { maxPrice: 200, duration: 3 },
                 'Bakery': { maxPrice: 50, duration: 1 },
                 'Patesries': { maxPrice: 100, duration: 2 },
                 'Drinks & Juices': { maxPrice: 80, duration: 4 },
+
+                // duration: 3 => 3 days
             },
 
             img: {
@@ -144,10 +146,17 @@
             AddProduct() {
                 this.waiting = true
                 const selectedControl = this.productControll[this.info.subCategory]
-                const form = new FormData()
-                , product = { 
+                , form = new FormData()
+                , now = new Date()
+                let expiresAt = null
+                , test = false
+
+                test ? expiresAt = new Date( now.getTime() + 1 * 60 * 1000) // for test 1 minute
+                : expiresAt = new Date( now.getTime() + selectedControl.duration * 24 * 60 * 60 * 1000 )
+
+                const product = { 
                     info: this.info,
-                    duration: selectedControl.duration,
+                    expiresAt: expiresAt,
                     addedBy: {
                         id: this.$store.state.user.id,
                         fullName: this.$store.state.user.fullName,

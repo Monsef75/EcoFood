@@ -93,28 +93,17 @@ module.exports = (app, members, products, orders) => {
                 return res.status(400).send({ message: 'Product image is required' })
             }
 
-            const { info, addedBy, createdAt, duration } = JSON.parse(req.body.product)
-            const duration_ = Number(duration)
-
+            const { info, addedBy, createdAt, expiresAt } = JSON.parse(req.body.product)
             if (!addedBy?.id) {
                 return res.status(400).send({ message: 'Invalid user data' })
             }
-
-            if (Number.isNaN(duration_) || duration_ <= 0) {
-                return res.status(400).send({ message: 'Invalid product duration' })
-            }
-
-            const now = new Date()
-            const expiresAt = new Date(now.getTime() + duration_ * 24 * 60 * 60 * 1000)
-            // const expiresAt = new Date(now.getTime() + 1 * 60 * 1000) // for test 1 minute use this instead:
 
             const product = {
                 info: info,
                 addedBy: addedBy,
                 createdAt: createdAt,
-                expiresAt: expiresAt,
+                expiresAt: new Date(expiresAt),
                 image: `/uploads/${req.file.filename}`,
-                active: true,
             }
 
             const result = await products.insertOne(product)
@@ -136,9 +125,15 @@ module.exports = (app, members, products, orders) => {
                 Products = await products.find({ 'addedBy.id': req.query.userId }).toArray()
             }
             else {
-                Products = await products.find({ 'active': true }).toArray()
+                Products = await products.find({ 'expiresAt': { $gt: new Date()} }).toArray()
             }
-            res.send(Products)
+            const now = new Date()
+            const formatted = Products.map(p => ({
+                ...p,
+                active: new Date(p.expiresAt) > now
+            }))
+
+            res.send(formatted)
         } catch (err) {
             console.log('getProducts failed', err)
             res.status(500).send({ message: 'Failed to get products' })
