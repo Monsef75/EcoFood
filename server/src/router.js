@@ -399,9 +399,21 @@ module.exports = (app, members, products, orders) => {
                 return res.status(400).send({ message: 'Product id is required' })
             }
 
-            const deleteProduct = await products.deleteOne({ _id: new ObjectId(req.body.id) })
+            const productId = req.body.id
+
+            // Delete orders containing this product
+            await orders.deleteMany({
+                'products.productId': productId
+            })
+
+            // Delete product
+            const deleteProduct = await products.deleteOne({
+                _id: new ObjectId(productId)
+            })
+
             res.send(deleteProduct)
-        } catch (err) {
+        }
+        catch (err) {
             console.log('adminPanel/deleteProduct failed', err)
             res.status(500).send({ message: 'Failed to delete product' })
         }

@@ -29,11 +29,20 @@
                     <span class="s20 c-light-white2 fw-bold n-spacing05">You didn't added any product</span>
                 </div>
             </div>
+
             <ul class="d-flex flex-wrap justify-content-center gap-3 my-3" v-else>
                 <p class="position-relative w-100 c-white fw-bold s18 t-center n-spacing05 f-center">My Products</p>
-                <li class="product position-relative f-center" :style="{ backgroundImage: `url(${END_POINT + product.img})` }"
-                :class="{'deleted': !product.active}" v-for="product in products">
-                    <i class="fa-solid fa-ban c-light-white2 s50 zindex-p-1" v-show="!product.active"></i>
+                <li class="product t-center" v-for="(product, index) in products">
+                    <div class="img position-relative f-center" :class="{'deleted': !product.active}" 
+                     :style="{ backgroundImage: `url(${END_POINT + product.img})` }">
+                        <i class="fa-solid fa-ban c-light-white2 s50 zindex-p-1" v-show="!product.active"></i>
+                    </div>
+                    <div class="ButtonSpinner bc-red rd-10 mt-3 mx-auto" style="width: 64px; height: 32px;" v-if="product.waiting">
+                        <span class="Spinner" ></span>
+                    </div> 
+                    <button class="bc-red px-4 py-1 rd-10 mt-3" @click="DeleteProduct(product.id, index)" v-else>
+                        <i class="fa-solid fa-trash c-white s18"></i>
+                    </button>
                 </li>
             </ul>
         </section>
@@ -53,20 +62,19 @@
             END_POINT: import.meta.env.VITE_END_POINT,
             products: [],
             loading: true,
-            // settings : [
-            //     { name: 'lang', title: 'Language', icon: 'fa-language'},
-            //     { name: 'pass', title: 'Change Password', icon: 'fa-unlock-keyhole'},
-            //     { name: 'out', title: 'Sign Out', icon: 'fa-right-from-bracket'},
-            //     { name: 'del', title: 'Delete Account', icon: 'fa-user-slash'},
-            // ],
         }},
         methods: {
             setting() {
-                // if (name == 'out') this.loggOut()
                 this.loggOut()
             },
+            DeleteProduct( productId, index ) {
+                this.products[index].waiting = true
+                this.deleteProduct({ id: productId }).then( ()=> {
+                    this.products.splice( index,1 )
+                }).catch( ()=> { this.products[index].waiting = false })
+            },
             ...mapMutations(['loggOut']),
-            ...mapActions(['getProducts']),
+            ...mapActions(['getProducts','deleteProduct']),
         },
         computed: {
             
@@ -96,37 +104,39 @@
 <style scoped lang='scss'>
     ul {
         li {
-            width: 150px;
-            height: 150px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border: 5px solid hsl(60, 2%, 24%);
-            border-radius: 50%;
-            overflow: hidden;
-            position: relative;
-            span {
-                position: absolute;
-                &:first-of-type {
-                    background-color: var(--Red);
-                    left: 10px;
-                    top: 5px;
+            .img {
+                width: 150px;
+                height: 150px;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                border: 5px solid hsl(60, 2%, 24%);
+                border-radius: 50%;
+                overflow: hidden;
+                position: relative;
+                span {
+                    position: absolute;
+                    &:first-of-type {
+                        background-color: var(--Red);
+                        left: 10px;
+                        top: 5px;
+                    }
+                    &:last-of-type {
+                        background-color: var(--c2);
+                        right: 10px;
+                    }
                 }
-                &:last-of-type {
-                    background-color: var(--c2);
-                    right: 10px;
+                &.deleted::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    background-color: rgba(0, 0, 0, 0.6);
                 }
-            }
-            &.deleted::after {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background-color: rgba(0, 0, 0, 0.6);
-            }
 
-            &.deleted {
-                filter: grayscale(40%);
-                opacity: 0.9;
+                &.deleted {
+                    filter: grayscale(40%);
+                    opacity: 0.9;
+                }
             }
         }
         p {

@@ -123,6 +123,20 @@ const store = createStore({
                 })
             })
         },
+        deleteProduct( context,productId ) {
+            return new Promise((resolve, reject) => {
+                axios.delete(END_POINT + '/adminPanel/deleteProduct', { data: productId } )
+                .then( res => {
+                    console.log('Api Success', res.data)
+                    context.commit( 'setSuccessCard',{ text: 'Your Product Deleted Successfully', to: null})
+                    resolve()
+                })
+                .catch( err => {
+                    console.log('Api Failed', err)
+                    reject()
+                })
+            })
+        },
         getProducts( context, isProfile ) {
             return new Promise((resolve, reject) => {
                 axios.get(END_POINT + `/getProducts`, { params: { userId: isProfile ? context.state.user.id : null}})
